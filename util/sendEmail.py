@@ -4,6 +4,7 @@
 # @Site    : 
 # @File    : sendEmail.py
 # @Software: PyCharm
+import os
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -51,15 +52,18 @@ def send_email_attach(file_name):
     html_attachment["Content-Disposition"] = 'attachment; filename="test_port.html"'
     mime.attach(html_attachment)
     # 附件2
-    img_attachment = MIMEText(open(file_name, 'rb').read(), 'base64', 'utf-8')
+    imageFile = os.path.dirname(__file__).replace("util","image/")+'test_search_2018-12-28_17-32-47.png'
+    imageApart = MIMEImage(open(imageFile, 'rb').read(), imageFile.split('.')[-1])
+    imageApart.add_header('Content-Disposition', 'attachment', filename=imageFile)
+    mime.attach(imageApart)
 
-    # imageFile = '1.png'
-    # imageApart = MIMEImage(open(imageFile, 'rb').read(), imageFile.split('.')[-1])
-    # imageApart.add_header('Content-Disposition', 'attachment', filename=imageFile)
-    smtp= SMTP_SSL(email_info["host"],email_info["port"])
-    smtp.login(email_info["username"], email_info["password"])
-    smtp.sendmail(email_info["fromAddr"], to_addrs, mime.as_string())
-    smtp.close()
+    try:
+        smtp= SMTP_SSL(email_info["host"],email_info["port"])
+        smtp.login(email_info["username"], email_info["password"])
+        smtp.sendmail(email_info["fromAddr"], to_addrs, mime.as_string())
+        smtp.close()
+    except:
+        print("邮件发送失败！")
 
     print("邮件发送成功！")
 

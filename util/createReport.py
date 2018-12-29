@@ -6,7 +6,7 @@
 # @Software: PyCharm
 import os
 import time
-from HTMLTestRunner import HTMLTestRunner
+from BSTestRunner import BSTestRunner
 
 
 def run_and_createReport(suite):
@@ -16,7 +16,7 @@ def run_and_createReport(suite):
     # file_path=open(fn,"wb")
 
     with open(fn,"wb") as file_path:
-        runner = HTMLTestRunner(stream=file_path, verbosity=1, title="测试报告", description="Qunar机票搜索")
+        runner = BSTestRunner(stream=file_path, verbosity=1, title="测试报告", description="Qunar机票搜索")
         runner.run(suite)
     # file_path.close()
     return fn
